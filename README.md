@@ -4,11 +4,11 @@ This is a CDK stack that quickly gets you setup with a kubernetes cluster, repo,
 
 # What to configure
 
-There are a number of things you can configure in index.ts
+There are a number of things you can configure in `index.ts`:
 
 1. `clusterName` to change the name of the cluster
 2. kubernetes version: currently CDK supports up to 1.21. Make sure to change both `eks.KubernetesVersion.V1_21` and `autoscalerImageTag`. The image tag is used for the autoscaler-deployment so search through [releases here](https://github.com/kubernetes/autoscaler/releases) i.e. "1.21" to find the correct tag for your kubernetes version.
-3. the EC2 instance/family. I have it set to graviton3 right now. Due to a quirk with CDK you have to change both `instanceTypes` and `amiType` for it to work. If you aren't using a graviton/arm64 instance just remove `amiType` altogether.
+3. the EC2 instance/family. I have it set to graviton3 right now. Due to a quirk with CDK, since I'm using arm64 EC2 instances for my cluster, we have to set both `instanceTypes` and `amiType` for everything to work. If you aren't using a graviton/arm64 instance just remove `amiType` altogether.
 4. for the autoscaler you can of course change `minSize` and `maxSize` and probably you should because my current configuration here has a max size of 80!
 5. the maximum retention time for images in the repository. I have it set to `365` day image retention but you can change it to anything you want or simply comment out that line for images to live forever.
 
@@ -30,10 +30,12 @@ Alternatively I just learned about [Karpenter](https://github.com/aws/karpenter)
 5. You will need to login to the docker repo that this stack makes too. The stack should log an `accessKeyId` as well as a `secretAccessKey`. Run `aws configure --profile test-runner-repo-user` and login with that key.
 6. then run this to login to that repo:
 
-    ACCOUNT_ID=<PUT YOUR AWS ACCOUNT ID HERE>
-    REGION=us-east-1
-    AWS_CLI_PROFILE=test-runner-repo-user
-    
-    aws ecr get-login-password --region $REGION --profile $AWS_CLI_PROFILE | docker login --username AWS --password-stdin $ACCOUNT_ID.dkr.ecr.$REGION.amazonaws.com
+```
+ACCOUNT_ID=<PUT YOUR AWS ACCOUNT ID HERE>
+REGION=us-east-1
+AWS_CLI_PROFILE=test-runner-repo-user
+
+aws ecr get-login-password --region $REGION --profile $AWS_CLI_PROFILE | docker login --username AWS --password-stdin $ACCOUNT_ID.dkr.ecr.$REGION.amazonaws.com
+```
 
 And that's it. You should now have a kubernetes cluster that autoscales, along with a repo the cluster can talk to and that you can too to push/pull images!
