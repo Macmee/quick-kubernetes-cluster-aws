@@ -4,11 +4,11 @@ This is a CDK stack that quickly gets you setup with a kubernetes cluster, repo,
 
 # What to configure
 
-There are a number of things you can configure in index.ts
+There are a number of things you can configure in `index.ts`:
 
 1. `clusterName` to change the name of the cluster
 2. kubernetes version: currently CDK supports up to 1.21. Make sure to change both `eks.KubernetesVersion.V1_21` and `autoscalerImageTag`. The image tag is used for the autoscaler-deployment so search through [releases here](https://github.com/kubernetes/autoscaler/releases) i.e. "1.21" to find the correct tag for your kubernetes version.
-3. the EC2 instance/family. I have it set to graviton3 right now. Due to a quirk with CDK you have to change both `instanceTypes` and `amiType` for it to work. If you aren't using a graviton/arm64 instance just remove `amiType` altogether.
+3. the EC2 instance/family. I have it set to graviton3 right now. Due to a quirk with CDK, since I'm using arm64 EC2 instances for my cluster, we have to set both `instanceTypes` and `amiType` for everything to work. If you aren't using a graviton/arm64 instance just remove `amiType` altogether.
 4. for the autoscaler you can of course change `minSize` and `maxSize` and probably you should because my current configuration here has a max size of 80!
 5. the maximum retention time for images in the repository. I have it set to `365` day image retention but you can change it to anything you want or simply comment out that line for images to live forever.
 
