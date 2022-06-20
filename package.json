@@ -1,7 +1,8 @@
 {
-  "name": "eks",
+  "name": "EKS Cluster",
+  "author": "David Zorychta",
   "version": "1.0.0",
-  "description": "",
+  "description": "This repo is a CDK stack that deploys an EKS Kubernetes cluster, a repo for container images, and an autoscaler for nodes.",
   "engines": {
     "npm": ">=7.0.0",
     "node": ">=16.0.0"
