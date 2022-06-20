@@ -30,10 +30,12 @@ Alternatively I just learned about [Karpenter](https://github.com/aws/karpenter)
 5. You will need to login to the docker repo that this stack makes too. The stack should log an `accessKeyId` as well as a `secretAccessKey`. Run `aws configure --profile test-runner-repo-user` and login with that key.
 6. then run this to login to that repo:
 
-    ACCOUNT_ID=<PUT YOUR AWS ACCOUNT ID HERE>
-    REGION=us-east-1
-    AWS_CLI_PROFILE=test-runner-repo-user
-    
-    aws ecr get-login-password --region $REGION --profile $AWS_CLI_PROFILE | docker login --username AWS --password-stdin $ACCOUNT_ID.dkr.ecr.$REGION.amazonaws.com
+```
+ACCOUNT_ID=<PUT YOUR AWS ACCOUNT ID HERE>
+REGION=us-east-1
+AWS_CLI_PROFILE=test-runner-repo-user
+
+aws ecr get-login-password --region $REGION --profile $AWS_CLI_PROFILE | docker login --username AWS --password-stdin $ACCOUNT_ID.dkr.ecr.$REGION.amazonaws.com
+```
 
 And that's it. You should now have a kubernetes cluster that autoscales, along with a repo the cluster can talk to and that you can too to push/pull images!
