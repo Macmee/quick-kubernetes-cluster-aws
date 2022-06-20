@@ -71,7 +71,6 @@ class EKSCluster extends cdk.Stack {
       manifest: JSON.parse(autoscalerManifest),
     });
 
-
     // 6️⃣ Make image container and auth the cluster to talk to it
 
     const repository = new ecr.Repository(this, clusterName + '-repo', { repositoryName: clusterName + '-repo' });
@@ -95,6 +94,7 @@ class EKSCluster extends cdk.Stack {
     new cdk.CfnOutput(this, 'accessKeyId', { value: accessKey.ref });
     new cdk.CfnOutput(this, 'secretAccessKey', { value: accessKey.attrSecretAccessKey });
   }
+
 }
 
 const app = new cdk.App();
