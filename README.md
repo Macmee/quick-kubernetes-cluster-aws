@@ -25,10 +25,12 @@ Alternatively I just learned about [Karpenter](https://github.com/aws/karpenter)
 1. edit the variables in `index.ts` as you want.
 2. in `package.json` change `--profile dev` to whichever `awscli` profile you use with your account, or just remove `--profile dev` altogether if you dont have multiple accounts setup. I hard coded it to this for safety.
 3. run `npm run deploy` which will build and deploy the stack!
-4. once the cloudformation is done it will print out a line like this:
-`aws eks update-kubeconfig --name x-x --region us-east-1 --role-arn arn:aws:iam::x:role/x-x-x-cdk-d-x-x` and you can run this command to generate a kubeconfig file. Prefix the command with `KUBECONFIG=~/some/other/path` if you want it to write the kubeconfig to its own file instead of adding a context to your existing kubeconfig
-5. You will need to login to the docker repo that this stack makes too. The stack should log an `accessKeyId` as well as a `secretAccessKey`. Run `aws configure --profile test-runner-repo-user` and login with that key.
-6. then run this to login to that repo:
+4. write down the accessKeyId and grab the secret from secret manager in AWS console
+add aws cli profile for cluster to your machine:
+aws configure --profile clusterName
+KUBECONFIG=$HOME/.ssh/clusterName.kubeconfig aws eks update-kubeconfig --name clusterName --profile clusterName --region us-east-1
+
+for the container registry:
 
 ```
 ACCOUNT_ID=<PUT YOUR AWS ACCOUNT ID HERE>
@@ -39,3 +41,16 @@ aws ecr get-login-password --region $REGION --profile $AWS_CLI_PROFILE | docker 
 ```
 
 And that's it. You should now have a kubernetes cluster that autoscales, along with a repo the cluster can talk to and that you can too to push/pull images!
+
+---
+
+other CDK commands:
+
+```
+* `npm run build`   compile typescript to js
+* `npm run watch`   watch for changes and compile
+* `npm run test`    perform the jest unit tests
+* `cdk deploy`      deploy this stack to your default AWS account/region
+* `cdk diff`        compare deployed stack with current state
+* `cdk synth`       emits the synthesized CloudFormation template
+```
